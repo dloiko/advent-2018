@@ -13,6 +13,15 @@ func check(e error) {
   }
 }
 
+func contains(e int, s []int) bool {
+    for _, a := range s {
+        if a == e {
+            return true
+        }
+    }
+    return false
+}
+
 type coordinates struct {
   x, y []int
 }
@@ -56,9 +65,28 @@ func drawmap(lines []coordinates) [][]string {
     }
   }
   mapped := make([][]string, max_x-min_x+1)
-  for i := range mapped {
+  for i, _ := range mapped {
     mapped[i] = make([]string, max_y-min_y+1)
+    for j, _ := range mapped[i] {
+      for _, line := range lines {
+        x_val := make([]int, max_x-min_x+1)
+        y_val := make([]int, max_y-min_y+1)
+
+        for h, _ := range make([]int, len(lines)-1) {
+          x_val[h] = line.x[h]-min_x
+          y_val[h] = line.y[h]-min_y
+        }
+        
+        if contains(i, x_val)&&contains(j, y_val) {
+          mapped[i][j] = "#"
+        } else {
+          mapped[i][j] = "."
+        }
+      }
+    }
   }
+
+
   fmt.Println(max_x)
   fmt.Println(max_y)
   fmt.Println(min_x)
